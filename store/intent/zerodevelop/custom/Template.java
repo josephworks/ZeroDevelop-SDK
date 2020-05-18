@@ -25,9 +25,9 @@ public class Template extends Module {
 	
 	@Override
 	public Version getBuildVersion() {
-		/**Return 1.2.0 because that is the version of the SDK we're using.
+		/*Return 1.2.0 because that is the version of the SDK we're using.
 		   It will help us evaluate compatibility when newer versions are available */
-		
+
 		return new Version(1, 2, 0);
 	}
 
