@@ -32,12 +32,22 @@ task setup() {
 task install() {
     //needs to run gradlew compileJava
     //compiled classes stored at \out\production\ZeroDevelop-SDK\store\intent\zerodevelop
+    //if compiled by gradle, check \build\classes\java\main\store\intent\zerodevelop
     //compiled classes need to go to userdir\intentlauncher\ZeroDay\ZeroDevelop
 }
 
+install.dependsOn compileJava
 setup.dependsOn downloadLibs
 defaultTasks 'setup'
 
 dependencies {
     implementation files('libs/ZeroDevelop-SDK-1.0.0.jar')
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['store/intent/zerodevelop']
+        }
+    }
 }
