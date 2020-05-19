@@ -80,7 +80,7 @@ task run() {
 }
 
 // You can use task.dependsOn anotherTask here
-defaultTasks 'setup'
+defaultTasks 'install'
 
 dependencies {
     implementation files('libs/ZeroDevelop-SDK-1.0.0.jar')
