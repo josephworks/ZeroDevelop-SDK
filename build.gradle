@@ -63,7 +63,7 @@ task install() {
     //needs to run gradlew compileJava
     //compiled classes stored at \out\production\ZeroDevelop-SDK\store\intent\zerodevelop
     //if compiled by gradle, check \build\classes\java\main\store\intent\zerodevelop
-    //compiled classes need to go to userdir\intentlauncher\ZeroDay\ZeroDevelop
+    //compiled classes need to go to homePath\intentlauncher\ZeroDay\ZeroDevelop
 }
 
 task release(type: Zip, group: "Archive", description: "Archives compiled files in a zip file") {
