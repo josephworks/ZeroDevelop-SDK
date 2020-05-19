@@ -12,6 +12,7 @@ plugins {
 }
 
 def homePath = System.properties['user.home']
+def launcher = 'libs/IntentLauncher.jar'
 
 task cleanup(type: Delete, group: "ZeroDevelop", description: "Cleans all unnecessary files") {
     delete 'build', 'libs', 'out', 'MyModule.zip', 'ZeroDevelop-SDK.zip'
@@ -39,6 +40,7 @@ task getLauncher(type: Download, group: "ZeroDevelop", description: "Download In
 }
 
 task unzip(type: Copy, group: "ZeroDevelop",) {
+    //delete 'libs/IntentLauncher.zip'
     def zipFile = file('libs/IntentLauncher.zip')
     def outputDir = file("libs/")
 
@@ -46,10 +48,19 @@ task unzip(type: Copy, group: "ZeroDevelop",) {
     into outputDir
 }
 
+task prepLauncher(type: Copy, group: "ZeroDevelop") {
+    from('libs/') {
+        rename 'Intent Launcher v6.jar', 'IntentLauncher.jar'
+    }
+    into 'libs'
+}
+
 task downloadLibs(group: "ZeroDevelop", description: "Download required Libraries") {
+    //delete 'libs' //Make downloads check if fileExists
     dependsOn getSDK
     dependsOn getLauncher
     dependsOn unzip
+    dependsOn prepLauncher
 }
 
 task setup(group: "ZeroDevelop",) {
@@ -73,10 +84,11 @@ task release(type: Zip, group: "ZeroDevelop", description: "Archives compiled fi
     //released file is in build/distributions/MyModule.zip
 }
 
-task run(group: "ZeroDevelop",) {
+task run(type: Exec, group: "ZeroDevelop",) {
     //https://docs.gradle.org/current/dsl/org.gradle.api.tasks.Exec.html - guide on running external programs
     //This needs to download intent launcher to libs
     dependsOn install
+    commandLine 'cmd', '/c', "java -jar $launcher" //change 'cmd' to your shell if using mac/linux
 }
 
 // You can use task.dependsOn anotherTask here
