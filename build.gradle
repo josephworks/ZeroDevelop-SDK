@@ -58,6 +58,7 @@ task setup() {
 }
 
 task install() {
+    dependsOn setup
     dependsOn compileJava
     //needs to run gradlew compileJava
     //compiled classes stored at \out\production\ZeroDevelop-SDK\store\intent\zerodevelop
