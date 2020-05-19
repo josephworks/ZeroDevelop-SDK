@@ -13,12 +13,12 @@ plugins {
 
 def homePath = System.properties['user.home']
 
-task cleanup(type: Delete, description: "Cleans all unnecessary files") {
+task cleanup(type: Delete, group: "ZeroDevelop", description: "Cleans all unnecessary files") {
     delete 'build', 'libs', 'out', 'MyModule.zip', 'ZeroDevelop-SDK.zip'
     followSymlinks = false
 }
 
-task zip(type: Zip, group: "Archive", description: "Archives project in a zip file") {
+task zip(type: Zip, group: "ZeroDevelop", description: "Archives project in a zip file") {
     from("$projectDir") {
         exclude "**/.gradle"
         exclude "**/build"
@@ -28,17 +28,17 @@ task zip(type: Zip, group: "Archive", description: "Archives project in a zip fi
     archiveFileName = "ZeroDevelop-SDK.zip"
 }
 
-task getSDK(type: Download, description: "Downloads SDK") {
+task getSDK(type: Download, group: "ZeroDevelop", description: "Downloads SDK") {
     src 'https://www.intent.store/zerodevelop/sdk/ZeroDevelop-SDK-1.0.0.jar'
     dest 'libs/ZeroDevelop-SDK-1.0.0.jar'
 }
 
-task getLauncher(type: Download, description: "Download Intent Launcher") {
+task getLauncher(type: Download, group: "ZeroDevelop", description: "Download Intent Launcher") {
     src 'https://intent.store/intentlauncher/Intent%20Launcher.zip'
     dest 'libs/IntentLauncher.zip'
 }
 
-task unzip(type: Copy) {
+task unzip(type: Copy, group: "ZeroDevelop",) {
     def zipFile = file('libs/IntentLauncher.zip')
     def outputDir = file("libs/")
 
@@ -46,18 +46,18 @@ task unzip(type: Copy) {
     into outputDir
 }
 
-task downloadLibs(description: "Download required Libraries") {
+task downloadLibs(group: "ZeroDevelop", description: "Download required Libraries") {
     dependsOn getSDK
     dependsOn getLauncher
     dependsOn unzip
 }
 
-task setup() {
+task setup(group: "ZeroDevelop",) {
     dependsOn downloadLibs
     println 'Starting!'
 }
 
-task install() {
+task install(group: "ZeroDevelop",) {
     dependsOn setup
     dependsOn compileJava
     //needs to run gradlew compileJava
@@ -66,14 +66,14 @@ task install() {
     //compiled classes need to go to homePath\intentlauncher\ZeroDay\ZeroDevelop
 }
 
-task release(type: Zip, group: "Archive", description: "Archives compiled files in a zip file") {
+task release(type: Zip, group: "ZeroDevelop", description: "Archives compiled files in a zip file") {
     dependsOn install
     from("$projectDir/build/classes/java/main/store/intent/zerodevelop/custom")
     archiveFileName = "MyModule.zip"
     //released file is in build/distributions/MyModule.zip
 }
 
-task run() {
+task run(group: "ZeroDevelop",) {
     //https://docs.gradle.org/current/dsl/org.gradle.api.tasks.Exec.html - guide on running external programs
     //This needs to download intent launcher to libs
     dependsOn install
